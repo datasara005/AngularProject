@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { InformaciaService } from './service/informacia.service';
 import { InformaciuliModel } from './models/informaciuli.model';
-import { NgFor } from '@angular/common';
+import { UserModel } from './models/user.model';
+import { UserService } from './service/user.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive],
   standalone: true,
-  imports: [RouterOutlet,NgFor],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -15,12 +17,19 @@ import { NgFor } from '@angular/common';
 
 export class AppComponent implements OnInit {
   informacia: InformaciuliModel[] = [];
-
-  constructor(private informaciaService: InformaciaService) {}
+  users: UserModel[]= [];
+  constructor(private informaciaService: InformaciaService , private userService: UserService) {}
 
   ngOnInit(): void {
     this.informaciaService.getInformacia().subscribe((data) => {
       this.informacia = data;
     });
+    this.userService.getUsers().subscribe((users) => {
+      this.users = users;
+      console.log(this.users)
+    })
+
+
   }
+
 }
